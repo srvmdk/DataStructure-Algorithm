@@ -126,9 +126,11 @@ class singlyLinkedList {
     if (typeof index !== "number" || index < 0 || index >= this.length)
       return null;
 
-    let currNode = this.head;
-    for (let i = 1; i <= index; i++) {
+    let currNode = this.head,
+      counter = 0;
+    while (counter !== index) {
       currNode = currNode.next;
+      counter++;
     }
 
     return currNode;
