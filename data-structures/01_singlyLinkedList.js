@@ -1,6 +1,6 @@
 /* Creating a singly linked list*/
 
-// create Node class
+// Define Node class
 class Node {
   constructor(val) {
     this.val = val;
@@ -8,7 +8,7 @@ class Node {
   }
 }
 
-// create singly linked list class
+// Define singly linked list class
 class singlyLinkedList {
   constructor() {
     this.head = null;
@@ -21,7 +21,7 @@ class singlyLinkedList {
     this.tail = null;
   }
 
-  /* Create push property - adds new node to end
+  /* Define push property - adds new node to end
     > accepts a value 
     > create 'new node' using value passed
     > if there is no 'head' on the list, set 'head' & 'tail' to be the newly created node
@@ -44,7 +44,7 @@ class singlyLinkedList {
     return this;
   }
 
-  /* Create pop property - removes one node from end
+  /* Define pop property - removes one node from end
     > if there's no nodes in list, return undefined
     > loop through the list until we reach the 'tail'
     > set 'next' property of the 2nd to last node to be null
@@ -72,7 +72,7 @@ class singlyLinkedList {
     return curr.val;
   }
 
-  /* Create shift property - removes one node from start
+  /* Define shift property - removes one node from start
     > if there's no nodes in list, return undefined
     > store current 'head' property in a variable
     > set 'head' property to current head's next property
@@ -91,7 +91,7 @@ class singlyLinkedList {
     return removeNode.val;
   }
 
-  /* Create unshift property - adds new node to start
+  /* Define unshift property - adds new node to start
     > accepts a value 
     > create 'new node' using value passed
     > if there is no 'head' on the list, set 'head' & 'tail' to be the newly created node
@@ -115,10 +115,29 @@ class singlyLinkedList {
     this.length++;
     return this;
   }
+
+  /* Define get property - fetch value for specific index
+    > accepts an index
+    > if 'index' < 0 or >= length of list, return null
+    > loop through the list until the index is reached and return the node at
+        specific index
+  */
+  get(index) {
+    if (typeof index !== "number" || index < 0 || index >= this.length)
+      return null;
+
+    let currNode = this.head;
+    for (let i = 1; i <= index; i++) {
+      currNode = currNode.next;
+    }
+
+    return currNode;
+  }
 }
 
-// checking ...
+// create a singly linked list
 let list = new singlyLinkedList();
-// list.push(1);
-// list.push(2);
-// list.push(3);
+list.push(0);
+list.push(1);
+list.push(2);
+list.push(3);
