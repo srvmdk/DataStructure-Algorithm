@@ -16,6 +16,11 @@ class singlyLinkedList {
     this.length = 0;
   }
 
+  resetHeadTail() {
+    this.head = null;
+    this.tail = null;
+  }
+
   /* Create push property - adds new node to end
     > accept a value 
     > create 'new node' using value passed
@@ -49,6 +54,7 @@ class singlyLinkedList {
     */
   pop() {
     if (!this.head) return;
+
     let curr = this.head,
       prev = curr;
 
@@ -61,11 +67,28 @@ class singlyLinkedList {
     this.tail = prev;
 
     this.length--;
-    if (this.length === 0) {
-      this.head = null;
-      this.tail = null;
-    }
+    if (this.length === 0) this.resetHeadTail();
+
     return curr.val;
+  }
+
+  /* Create shift property - removes one node from start
+    > if there's no nodes in list, return undefined
+    > store current 'head' property in a variable
+    > set 'head' property to current head's next property
+    > decrement the length by 1
+    > return the value of node removed
+    */
+  shift() {
+    if (!this.head) return;
+
+    let removeNode = this.head;
+    this.head = removeNode.next;
+
+    this.length--;
+    if (this.length === 0) this.resetHeadTail();
+    
+    return removeNode.val;
   }
 }
 
