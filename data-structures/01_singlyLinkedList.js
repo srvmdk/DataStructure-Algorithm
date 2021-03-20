@@ -135,11 +135,30 @@ class singlyLinkedList {
 
     return currNode;
   }
+
+  /* Define set property - set value at a specific index
+    > accepts a value and an index
+    > use 'get' function to find specific node
+    > if node not found, retun false
+    > if found, update its value with that passed in the function and return true
+  */
+  set(index, val) {
+    if (val === "undefined" || index === "undefined") return false;
+
+    let foundNode = this.get(index);
+
+    if (foundNode) {
+      foundNode.val = val;
+      return true;
+    }
+
+    return false;
+  }
 }
 
 // create a singly linked list
 let list = new singlyLinkedList();
-list.push(0);
-list.push(1);
-list.push(2);
-list.push(3);
+list.push("Hi!!");
+list.push("this is");
+list.push("Sourav");
+list.push(":)");
