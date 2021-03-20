@@ -22,7 +22,7 @@ class singlyLinkedList {
   }
 
   /* Create push property - adds new node to end
-    > accept a value 
+    > accepts a value 
     > create 'new node' using value passed
     > if there is no 'head' on the list, set 'head' & 'tail' to be the newly created node
     > else, set 'next' property on the 'tail' to be new node and set 'tail' property on
@@ -87,13 +87,38 @@ class singlyLinkedList {
 
     this.length--;
     if (this.length === 0) this.resetHeadTail();
-    
+
     return removeNode.val;
+  }
+
+  /* Create unshift property - adds new node to start
+    > accepts a value 
+    > create 'new node' using value passed
+    > if there is no 'head' on the list, set 'head' & 'tail' to be the newly created node
+    > else, set newly created node's 'next' property to be the current head property on
+        the list
+    > set 'head' property on the list to be that newly created node
+    > increament length of the list by 1
+    > return the list
+   */
+  unshift(val) {
+    let newNode = new Node(val);
+
+    if (!this.head) {
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      newNode.next = this.head;
+      this.head = newNode;
+    }
+
+    this.length++;
+    return this;
   }
 }
 
 // checking ...
 let list = new singlyLinkedList();
-list.push(1);
-list.push(2);
-list.push(3);
+// list.push(1);
+// list.push(2);
+// list.push(3);
