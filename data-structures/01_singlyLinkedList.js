@@ -178,15 +178,38 @@ class singlyLinkedList {
     let newNode = new Node(val);
 
     if (index === 0) return !!this.unshift(val);
-    else if (index === this.length) return !!this.push(val);
-    else {
-      let prevNode = this.get(index - 1);
-      newNode.next = prevNode.next;
-      prevNode.next = newNode;
-      this.length++;
-    }
+    if (index === this.length) return !!this.push(val);
+
+    let prevNode = this.get(index - 1);
+    newNode.next = prevNode.next;
+    prevNode.next = newNode;
+    this.length++;
 
     return true;
+  }
+
+  /* Define remove property - remove value from a specific index
+    > accepts an index  
+    > if index < 0 or >= the length of the list, return undefined
+    > if index is same aslength-1, use 'pop'
+    > if index = 0, use 'shift'
+    > otherwise, using 'get' method, access the node at index - 1  
+    > set 'next' property on that node to be the next of the next node
+    > decrement the length
+    > return the value of the node removed
+  */
+  remove(index) {
+    if (index < 0 || index >= this.length) return;
+
+    if (index === 0) return this.shift();
+    if (index === this.length - 1) return this.pop();
+
+    let prevNode = this.get(index - 1);
+    let removeNode = prevNode.next;
+    prevNode.next = removeNode.next;
+    this.length--;
+
+    return removeNode.val;
   }
 }
 
