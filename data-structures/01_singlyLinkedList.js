@@ -177,8 +177,8 @@ class singlyLinkedList {
 
     let newNode = new Node(val);
 
-    if (index === 0) this.unshift(val);
-    else if (index === this.length) this.push(val);
+    if (index === 0) return !!this.unshift(val);
+    else if (index === this.length) return !!this.push(val);
     else {
       let prevNode = this.get(index - 1);
       newNode.next = prevNode.next;
