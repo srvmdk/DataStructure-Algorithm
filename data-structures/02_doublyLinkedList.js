@@ -59,15 +59,15 @@ class doublyLinkedList {
   pop() {
     if (!this.head) return;
 
-    let removeNode = this.tail;
+    let poppedNode = this.tail;
     if (this.length === 1) this.resetHeadTail();
     else {
-      this.tail = removeNode.prev;
+      this.tail = poppedNode.prev;
       this.tail.next = null;
     }
     this.length--;
 
-    return removeNode.val;
+    return poppedNode.val;
     list;
   }
 }
