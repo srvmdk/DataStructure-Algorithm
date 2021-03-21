@@ -136,12 +136,12 @@ class singlyLinkedList {
     return currNode;
   }
 
-  /* Define set property - set value at a specific index
+  /* Define set property - set value for a specific index
     > accepts a value and an index
     > use 'get' function to find specific node
     > if node not found, retun false
     > if found, update its value with that passed in the function and return true
-  */
+    */
   set(index, val) {
     if (val === "undefined" || index === "undefined") return false;
 
@@ -153,6 +153,40 @@ class singlyLinkedList {
     }
 
     return false;
+  }
+
+  /* Define insert property - insert value at a specific index
+    > accepts a value and an index
+    > create 'new node' using value passed
+    > if index is same as length, 'push' new node to the end of the list
+    > if index is 0, 'unshift' new node to the start of the list
+    > otherwise, 'get' the node at index - 1 position, let previous node
+    > set 'next' property on that 'previous node' to be new node
+    > set 'next' property on 'new node' to be previous's next
+    > increment the length
+    > return true
+    */
+  insert(index, val) {
+    if (
+      val === "undefined" ||
+      index === "undefined" ||
+      index < 0 ||
+      index > this.length
+    )
+      return false;
+
+    let newNode = new Node(val);
+
+    if (index === 0) this.unshift(val);
+    else if (index === this.length) this.push(val);
+    else {
+      let prevNode = this.get(index - 1);
+      newNode.next = prevNode.next;
+      prevNode.next = newNode;
+      this.length++;
+    }
+
+    return true;
   }
 }
 
