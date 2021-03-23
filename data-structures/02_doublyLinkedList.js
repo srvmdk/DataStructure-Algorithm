@@ -69,7 +69,60 @@ class doublyLinkedList {
     this.length--;
 
     return poppedNode.val;
-    list;
+  }
+
+  /* Define shift property
+    > If length is 0, return undefined
+    > Store the current head property in a variable (we'll call it old head)
+    > If the length is one,
+        > Set the head to be null
+        > Set the tail to be null
+    > Update the head to be the next of the old head
+    > Set the head's prev property to null
+    > Set the old head's next to null
+    > Decrement the length
+    */
+  shift() {
+    if (!this.head) return;
+
+    if (this.length === 1) this.resetHeadTail();
+    else {
+      let oldHead = this.head;
+      this.head = oldHead.next;
+      this.head.prev = null;
+      oldHead.next = null;
+    }
+    this.length--;
+
+    return oldHead;
+  }
+
+  /* Define unshift property
+    > Create a new node with the value passed to the function
+    > If the length is 0
+        > Set the head to be the new node
+        > Set the tail to be the new node
+    > Otherwise,
+        > Set the prev property on the head of the list to be the new node
+        > Set the next property on the new node to be the head property 
+        > Update the head to be the new node
+    > Increment the length
+    > Return the list
+    */
+  unshift(val) {
+    let newNode = new Node(val);
+
+    if (!this.length) {
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      this.head.prev = newNode;
+      newNode.next = this.head;
+      this.head = newNode;
+    }
+    this.length++;
+
+    return this;
   }
 }
 
