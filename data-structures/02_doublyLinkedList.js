@@ -167,6 +167,34 @@ class doublyLinkedList {
 
     return false;
   }
+
+  /* Define insert property
+    > If the index is less than zero or greater than or equal to the length return false
+    > If the index is 0, unshift
+    > If the index is the same as the length, push
+    > Use the get method to access the index -1
+    > Set the next and prev properties on the correct nodes to link everything together
+    > Increment the length 
+    > Return true
+    */
+  insert(index, val) {
+    if (index === 0) return !!this.unshift(val);
+    if (index === this.length) return !!this.push(val);
+
+    let newNode = new Node(val);
+    let foundNode = this.get(index - 1);
+    if (foundNode !== null) {
+      let nextNode = foundNode.next;
+      foundNode.next = newNode;
+      newNode.prev = foundNode;
+      newNode.next = nextNode;
+      nextNode.prev = newNode;
+      this.length++;
+      return true;
+    }
+
+    return false;
+  }
 }
 
 // create a doubly linked list
