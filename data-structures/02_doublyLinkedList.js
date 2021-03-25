@@ -149,7 +149,7 @@ class doublyLinkedList {
     return currentNode;
   }
 
-  /* Definne set property
+  /* Define set property
     > Create a variable which is the result of the get method at the index passed
       to the function
         > If the get method returns a valid node, 
