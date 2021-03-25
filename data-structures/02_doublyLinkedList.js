@@ -85,16 +85,16 @@ class doublyLinkedList {
   shift() {
     if (!this.head) return;
 
+    let oldHead = this.head;
     if (this.length === 1) this.resetHeadTail();
     else {
-      let oldHead = this.head;
       this.head = oldHead.next;
       this.head.prev = null;
       oldHead.next = null;
     }
     this.length--;
 
-    return oldHead;
+    return oldHead.val;
   }
 
   /* Define unshift property
@@ -194,6 +194,33 @@ class doublyLinkedList {
     }
 
     return false;
+  }
+
+  /* Define remove property
+    > If the index is less than zero or greater than or equal to the length return 
+      undefined
+    > If the index is 0, shift
+    > If the index is the same as the length-1, pop
+    > Use the get method to retrieve the item to be removed
+    > Update the next and prev properties to remove the found node from the list
+    > Set next and prev to null on the found node
+    > Decrement the length
+    > Return the removed node
+    */
+  remove(index) {
+    if (index === 0) return this.shift();
+    if (index === this.length - 1) return this.pop();
+
+    let removeNode = this.get(index);
+    if (removeNode !== null) {
+      removeNode.prev.next = removeNode.next;
+      removeNode.next.prev = removeNode.prev;
+      this.length--;
+
+      removeNode.prev = null;
+      removeNode.next = null;
+      return removeNode.val;
+    } else return;
   }
 }
 
