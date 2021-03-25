@@ -146,7 +146,26 @@ class doublyLinkedList {
       travelFromHead ? counter++ : counter--;
     }
 
-    return currentNode.val;
+    return currentNode;
+  }
+
+  /* Definne set property
+    > Create a variable which is the result of the get method at the index passed
+      to the function
+        > If the get method returns a valid node, 
+          set the value of that node to be the value passed to the function
+        > Return true
+    > Otherwise, return false
+    */
+  set(index, val) {
+    let foundNode = this.get(index);
+
+    if (foundNode !== null) {
+      foundNode.val = val;
+      return true;
+    }
+
+    return false;
   }
 }
 
