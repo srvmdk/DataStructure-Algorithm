@@ -124,11 +124,36 @@ class doublyLinkedList {
 
     return this;
   }
+
+  /* Define get property
+    > If the index is less than 0 or greater or equal to the length, return null
+    > If the index is less than or equal to half the length of the list
+        > Loop through the list starting from the head and loop towards the middle
+        > Return the node once it is found
+    > If the index is greater than half the length of the list
+    ​    > Loop through the list starting from the tail and loop towards the middle
+        > Return the node once it is found
+    */
+  get(index) {
+    if (index < 0 || index >= this.length) return null;
+    let travelFromHead = index <= this.length / 2 ? true : false;
+
+    let currentNode = travelFromHead ? this.head : this.tail;
+    let counter = travelFromHead ? 0 : this.length - 1;
+
+    while (counter !== index) {
+      currentNode = travelFromHead ? currentNode.next : currentNode.prev;
+      travelFromHead ? counter++ : counter--;
+    }
+
+    return currentNode.val;
+  }
 }
 
 // create a doubly linked list
 let list = new doublyLinkedList();
 list.push("Hi!!");
-list.push("this is");
+list.push("this");
+list.push("is");
 list.push("Sourav");
 list.push(":)");
