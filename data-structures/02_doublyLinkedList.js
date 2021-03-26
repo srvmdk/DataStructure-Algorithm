@@ -10,7 +10,7 @@ class Node {
 }
 
 // Define doubly linked list
-class doublyLinkedList {
+class DoublyLinkedList {
   constructor() {
     this.head = null;
     this.tail = null;
@@ -222,10 +222,34 @@ class doublyLinkedList {
       return removeNode.val;
     } else return;
   }
+
+  /* Define reverse property
+    > Create a variable called currentNode and set it to be the head of the list
+    > Swap head & tail property of the list
+    > Loop through the list
+        > create a variable nextNode and set it to be next property of currentNode
+        > swap next & prev property of the currentNode
+        > currentNode will be set to be same as stored in nextNode
+    > Return the list
+    */
+  reverse() {
+    let currentNode = this.head;
+    this.head = this.tail;
+    this.tail = currentNode;
+
+    for (let i = 0; i < this.length; i++) {
+      let nextNode = currentNode.next;
+      currentNode.next = currentNode.prev;
+      currentNode.prev = nextNode;
+      currentNode = nextNode;
+    }
+
+    return this;
+  }
 }
 
 // create a doubly linked list
-let list = new doublyLinkedList();
+let list = new DoublyLinkedList();
 list.push("Hi!!");
 list.push("this");
 list.push("is");
