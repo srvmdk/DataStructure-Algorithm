@@ -52,6 +52,7 @@ class Stack {
   pop() {
     if (!this.size) return;
     const poppedNode = this.first;
+    if (this.size === 1) this.last = null;
     this.first = poppedNode.next;
     poppedNode.next = null;
     this.size--;
