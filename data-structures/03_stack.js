@@ -1,4 +1,4 @@
-/* Implementing stack with singly linked list */
+/* Implementing stack with singly linked list - LIFO data structure */
 
 class Node {
   constructor(value) {
