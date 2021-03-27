@@ -14,6 +14,10 @@ class Queue {
     this.size = 0;
   }
 
+  /* Insertion & Removal should be O(1)
+        Since queue is of constant time, we will be adding at end and 
+        deleting data from start */
+
   /* Define enqueue - adding to end of the queue
         acts like push in linked list */
   enqueue(value) {

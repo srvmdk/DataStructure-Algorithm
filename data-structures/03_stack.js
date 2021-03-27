@@ -14,7 +14,8 @@ class Stack {
     this.size = 0;
   }
 
-  /* Since stack is of constant time, we will be adding and deleting data from start */
+  /* Insertion & Removal should be O(1)
+      Since stack is of constant time, we will be adding and deleting data from start */
 
   /* Define push - acts like unshift of linked list
     > The function should accept a value
