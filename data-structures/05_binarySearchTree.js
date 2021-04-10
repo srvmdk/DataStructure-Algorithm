@@ -98,7 +98,6 @@ class BinarySearchTree {
     > If there is a right property on the node dequeued - add it to the queue
     > Return the variable that stores the values
     */
-
   bfs() {
     let node = this.root,
       queue = [],
@@ -106,10 +105,79 @@ class BinarySearchTree {
     queue.push(node);
     while (queue.length) {
       node = queue.shift();
-      visited.push(node);
+      visited.push(node.value);
       if (node.left) queue.push(node.left);
       if (node.right) queue.push(node.right);
     }
+    return visited;
+  }
+
+  /* Define DFS - depth first search - PRE ORDER
+    > Create a variable to store the values of nodes visited
+    > Store the root of the BST in a variable called current
+    > Write a recursive helper function which accepts a node
+      > Push the value of the node to the variable that stores the values
+      > If the node has a left property, call the helper function with the
+        left property on the node
+      > If the node has a right property, call the helper function with the
+        right property on the node
+    > Invoke the helper function with the current variable
+    > Return the array of values
+    */
+  dfsPreOrder() {
+    let visited = [];
+    function traverse(node) {
+      visited.push(node.value);
+      if (node.left) traverse(node.left);
+      if (node.right) traverse(node.right);
+    }
+    traverse(this.root);
+    return visited;
+  }
+
+  /* Define DFS - depth first search - POST ORDER
+    > Create a variable to store the values of nodes visited
+    > Store the root of the BST in a variable called current
+    > Write a recursive helper function which accepts a node
+      > If the node has a left property, call the helper function with the
+        left property on the node
+      > If the node has a right property, call the helper function with the
+        right property on the node
+      > Push the value of the node to the variable that stores the values
+    > Invoke the helper function with the current variable
+    > Return the array of values
+    */
+  dfsPostOrder() {
+    let visited = [];
+    function traverse(node) {
+      if (node.left) traverse(node.left);
+      if (node.right) traverse(node.right);
+      visited.push(node.value);
+    }
+    traverse(this.root);
+    return visited;
+  }
+
+  /* Define DFS - depth first search - IN ORDER
+    > Create a variable to store the values of nodes visited
+    > Store the root of the BST in a variable called current
+    > Write a recursive helper function which accepts a node
+      > If the node has a left property, call the helper function with the
+        left property on the node
+      > Push the value of the node to the variable that stores the values
+      > If the node has a right property, call the helper function with the
+        right property on the node
+    > Invoke the helper function with the current variable
+    > Return the array of values
+    */
+  dfsInOrder() {
+    let visited = [];
+    function traverse(node) {
+      if (node.left) traverse(node.left);
+      visited.push(node.value);
+      if (node.right) traverse(node.right);
+    }
+    traverse(this.root);
     return visited;
   }
 }
@@ -123,3 +191,13 @@ tree.insert(8);
 tree.insert(20);
 
 console.log("%cOUTPUT", "color: green; font-weight: bold", tree);
+
+//  tree structure:
+//          10
+//      6       15
+//    3   8       20
+
+console.log("BFS", tree.bfs()); //  [10, 6, 15, 3, 8, 20]
+console.log("DFS pre-order", tree.dfsPreOrder()); //  [10, 6, 3, 8, 15, 20]
+console.log("DFS post-order", tree.dfsPostOrder()); //  [3, 8, 6, 20, 15, 10]
+console.log("DFS in-order", tree.dfsInOrder()); //  [3, 6, 8, 10, 15, 20]
