@@ -1,8 +1,14 @@
-/* Implementing queue with singly linked list - FIFO data structure */
+/**
+ * @class Queue
+ * @link https://cs.slides.com/colt_steele/queues
+ * Queue is FIFO data structure
+ * To maintain constant time for insertion & deletion,
+ * push (enque) & shift (deque) of singly linked list to be implemented 
+ */
 
 class Node {
-  constructor(value) {
-    this.value = value;
+  constructor(val) {
+    this.value = val;
     this.next = null;
   }
 }
@@ -14,38 +20,34 @@ class Queue {
     this.size = 0;
   }
 
-  /* Insertion & Removal should be O(1)
-        Since queue is of constant time, we will be adding at end and 
-        deleting data from start */
-
-  /* Define enqueue - adding to end of the queue
-        acts like push in linked list */
-  enqueue(value) {
-    const newNode = new Node(value);
-    if (!this.size) {
+  // https://cs.slides.com/colt_steele/queues#/7
+  enque(val) {
+    const newNode = new Node(val);
+    if (!this.first) {
       this.first = newNode;
-      this.last = newNode;
     } else {
       this.last.next = newNode;
-      this.last = newNode;
     }
+    this.last = newNode;
     return ++this.size;
   }
 
-  /* Define deque - remove from the beginning of the queue 
-        acts like shift in linked list */
-  dequeue() {
-    if (!this.size) return;
+  // https://cs.slides.com/colt_steele/queues#/10
+  deque() {
+    if (!this.first) return undefined;
     const removeNode = this.first;
-    if (this.size === 1) this.last = null;
-    this.first = removeNode.next;
-    removeNode.next = null;
+    if (this.first === this.last) {
+      this.first = null;
+      this.last = null;
+    } else {
+      this.first = removeNode.next;
+    }
     this.size--;
+    removeNode.next = null;
     return removeNode.value;
   }
 }
 
 const queue = new Queue();
-queue.enqueue("print-1");
-queue.enqueue("print-2");
-queue.enqueue("print-3");
+[10, 20, 30, 40, 50].forEach(queue.enque.bind(queue));
+console.log(queue);

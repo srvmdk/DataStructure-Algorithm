@@ -1,8 +1,14 @@
-/* Implementing stack with singly linked list - LIFO data structure */
+/**
+ * @class Stack
+ * @link https://cs.slides.com/colt_steele/stacks
+ * Stack is a data LIFO structure
+ * To maintain constant time for insertion & deletion,
+ * shift & unshift of singly linked list to be implemented
+ */
 
 class Node {
-  constructor(value) {
-    this.value = value;
+  constructor(val) {
+    this.value = val;
     this.next = null;
   }
 }
@@ -14,54 +20,35 @@ class Stack {
     this.size = 0;
   }
 
-  /* Insertion & Removal should be O(1)
-      Since stack is of constant time, we will be adding and deleting data from start */
-
-  /* Define push - acts like unshift of linked list
-    > The function should accept a value
-    > Create a new node with that value
-    > If there are no nodes in the stack, set the first and last property to be the
-      newly created node 
-    > If there is at least one node, create a variable that stores the current first
-      property on the stack
-    > Reset the first property to be the newly created node
-    > Set the next property on the node to be the previously created variable
-    > Increment the size of the stack by 1
-    > Return the size
-    */
-  push(value) {
-    const newNode = new Node(value);
-    if (!this.size) {
+  // https://cs.slides.com/colt_steele/stacks#/11
+  push(val) {
+    const newNode = new Node(val);
+    if (!this.first) {
       this.first = newNode;
       this.last = newNode;
     } else {
       newNode.next = this.first;
-      this.first = newNode;
     }
+    this.first = newNode;
     return ++this.size;
   }
 
-  /* Define pop - acts like shift of linked list
-    > If there are no nodes in the stack, return null
-    > Create a temporary variable to store the first property on the stack
-    > If there is only 1 node, set the first and last property to be null
-    > If there is more than one node, set the first property to be the next
-      property on the current first
-    > Decrement the size by 1
-    > Return the value of the node removed
-    */
+  // https://cs.slides.com/colt_steele/stacks#/14
   pop() {
-    if (!this.size) return;
-    const poppedNode = this.first;
-    if (this.size === 1) this.last = null;
-    this.first = poppedNode.next;
-    poppedNode.next = null;
+    if (!this.first) return undefined;
+    const removeNode = this.first;
+    if (this.first === this.last) {
+      this.first = null;
+      this.last = null;
+    } else {
+      this.first = removeNode.next;
+    }
+    removeNode.next = null;
     this.size--;
-    return poppedNode.value;
+    return removeNode.value;
   }
 }
 
 const stack = new Stack();
-stack.push("google");
-stack.push("facebook");
-stack.push("instagram");
+[10, 20, 30, 40, 50].forEach(stack.push.bind(stack));
+console.log(stack);

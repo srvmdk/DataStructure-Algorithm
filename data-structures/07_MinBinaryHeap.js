@@ -1,21 +1,19 @@
 /**
- * @class MaxBinaryHeap
- * @link https://cs.slides.com/colt_steele/heaps
+ * @class MinBinaryHeap
  */
 
-class MaxBinaryHeap {
+class MinBinaryHeap {
   constructor() {
     this.value = [];
   }
 
-  // https://cs.slides.com/colt_steele/heaps#/28
   insert(val) {
     this.value.push(val);
     const bubbleUp = () => {
       let childIdx = this.value.length - 1;
-      while (childIdx > 0) {
+      while(childIdx > 0) {
         const parentIdx = Math.floor((childIdx - 1) / 2);
-        if (this.value[parentIdx] > this.value[childIdx]) break;
+        if (this.value[parentIdx] < this.value[childIdx] ) break;
         [this.value[childIdx], this.value[parentIdx]] = [
           this.value[parentIdx],
           this.value[childIdx],
@@ -27,8 +25,7 @@ class MaxBinaryHeap {
     return this.value;
   }
 
-  // https://cs.slides.com/colt_steele/heaps#/31
-  extractMax() {
+  extractMin() {
     [this.value[0], this.value[this.value.length - 1]] = [
       this.value[this.value.length - 1],
       this.value[0],
@@ -46,17 +43,17 @@ class MaxBinaryHeap {
         let swap;
         if (leftChildIdx < length) {
           leftChild = this.value[leftChildIdx];
-          if (leftChild > el) swap = leftChildIdx;
+          if (leftChild < el) swap = leftChildIdx;
         }
         if (rightChildIdx < length) {
           rightChild = this.value[rightChildIdx];
-          if ((!swap && rightChild > el) || (!!swap && rightChild > leftChild))
+          if ((!swap && rightChild < el) || (swap && rightChild < leftChild))
             swap = rightChildIdx;
         }
         if (!swap) break;
-        [this.value[idx], this.value[swap]] = [
-          this.value[swap],
+        [this.value[swap], this.value[idx]] = [
           this.value[idx],
+          this.value[swap],
         ];
         idx = swap;
       }
@@ -66,7 +63,7 @@ class MaxBinaryHeap {
   }
 }
 
-const maxBinaryHeap = new MaxBinaryHeap();
+const minBinaryHeap = new MinBinaryHeap();
 
-[41, 39, 33, 18, 27, 12].forEach(maxBinaryHeap.insert.bind(maxBinaryHeap));
-console.log('Max binary heap:', maxBinaryHeap.value);
+[41, 39, 33, 18, 27, 12].forEach(minBinaryHeap.insert.bind(minBinaryHeap));
+console.log('Min binary heap:', minBinaryHeap.value);

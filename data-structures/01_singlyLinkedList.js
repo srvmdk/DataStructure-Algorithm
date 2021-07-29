@@ -1,14 +1,15 @@
-/* Creating a singly linked list*/
+/**
+ * @class SinglyLinkedList
+ * @link https://cs.slides.com/colt_steele/singly-linked-lists
+ */
 
-// Define Node class
 class Node {
   constructor(val) {
-    this.val = val;
+    this.value = val;
     this.next = null;
   }
 }
 
-// Define singly linked list class
 class SinglyLinkedList {
   constructor() {
     this.head = null;
@@ -16,233 +17,130 @@ class SinglyLinkedList {
     this.length = 0;
   }
 
-  resetHeadTail() {
-    this.head = null;
-    this.tail = null;
-  }
-
-  /* Define push property - adds new node to end
-    > accepts a value 
-    > create 'new node' using value passed
-    > if there is no 'head' on the list, set 'head' & 'tail' to be the newly created node
-    > else, set 'next' property on the 'tail' to be new node and set 'tail' property on
-        the list to be newly created node
-    > increament length of the list by 1
-    > return the list
-    */
+  // https://cs.slides.com/colt_steele/singly-linked-lists#/5
   push(val) {
-    let newNode = new Node(val);
-
-    if (!this.head) {
-      this.head = newNode;
-    } else {
+    const newNode = new Node(val);
+    if (this.head) {
       this.tail.next = newNode;
+    } else {
+      this.head = newNode;
     }
-
     this.tail = newNode;
     this.length++;
     return this;
   }
 
-  /* Define pop property - removes one node from end
-    > if there's no nodes in list, return undefined
-    > loop through the list until we reach the 'tail'
-    > set 'next' property of the 2nd to last node to be null
-    > set 'tail' to be the 2nd to last node
-    > decrement the length by 1
-    > return the value of node removed
-    */
+  // https://cs.slides.com/colt_steele/singly-linked-lists#/8
   pop() {
-    if (!this.head) return;
-
-    let curr = this.head,
-      prev = curr;
-
-    while (curr.next) {
-      prev = curr;
-      curr = prev.next;
-    }
-
-    prev.next = null;
-    this.tail = prev;
-
-    this.length--;
-    if (this.length === 0) this.resetHeadTail();
-
-    return curr.val;
-  }
-
-  /* Define shift property - removes one node from start
-    > if there's no nodes in list, return undefined
-    > store current 'head' property in a variable
-    > set 'head' property to current head's next property
-    > decrement the length by 1
-    > return the value of node removed
-    */
-  shift() {
-    if (!this.head) return;
-
-    let removeNode = this.head;
-    this.head = removeNode.next;
-
-    this.length--;
-    if (this.length === 0) this.resetHeadTail();
-
-    return removeNode.val;
-  }
-
-  /* Define unshift property - adds new node to start
-    > accepts a value 
-    > create 'new node' using value passed
-    > if there is no 'head' on the list, set 'head' & 'tail' to be the newly created node
-    > else, set newly created node's 'next' property to be the current head property on
-        the list
-    > set 'head' property on the list to be that newly created node
-    > increament length of the list by 1
-    > return the list
-   */
-  unshift(val) {
-    let newNode = new Node(val);
-
-    if (!this.head) {
-      this.head = newNode;
-      this.tail = newNode;
+    if (!this.head) return undefined;
+    const removeNode = this.tail;
+    if (this.head === this.tail) {
+      this.head = null;
+      this.tail = null;
     } else {
-      newNode.next = this.head;
-      this.head = newNode;
+      let curr = this.head,
+        prev = null;
+      while (curr.next) {
+        prev = curr;
+        curr = curr.next;
+      }
+      this.tail = prev;
+      this.tail.next = null;
     }
+    this.length--;
+    return removeNode.value;
+  }
 
+  // https://cs.slides.com/colt_steele/singly-linked-lists#/11
+  shift() {
+    if (!this.head) return undefined;
+    const removeNode = this.head;
+    this.head = this.head.next;
+    this.length--;
+    removeNode.next = null;
+    return removeNode.value;
+  }
+
+  // https://cs.slides.com/colt_steele/singly-linked-lists#/14
+  unshift(val) {
+    const newNode = new Node(val);
+    const nextNode = this.head;
+    this.head = newNode;
+    this.head.next = nextNode;
+    if (!nextNode) {
+      this.tail = this.head;
+    }
     this.length++;
     return this;
   }
 
-  /* Define get property - fetch value for specific index
-    > accepts an index
-    > if 'index' < 0 or >= length of list, return null
-    > loop through the list until the index is reached and return the node at
-        specific index
-  */
+  // https://cs.slides.com/colt_steele/singly-linked-lists#/17
   get(index) {
-    if (typeof index !== "number" || index < 0 || index >= this.length)
-      return null;
-
-    let currNode = this.head,
-      counter = 0;
-    while (counter !== index) {
-      currNode = currNode.next;
-      counter++;
+    if (index < 0 || index >= this.length) return null;
+    let curr = this.head;
+    for (let i = 0; i < index; i++) {
+      curr = curr.next;
     }
-
-    return currNode;
+    return curr;
   }
 
-  /* Define set property - set value for a specific index
-    > accepts a value and an index
-    > use 'get' function to find specific node
-    > if node not found, retun false
-    > if found, update its value with that passed in the function and return true
-    */
+  // https://cs.slides.com/colt_steele/singly-linked-lists#/21
   set(index, val) {
-    if (val === "undefined" || index === "undefined") return false;
-
-    let foundNode = this.get(index);
-
-    if (foundNode) {
-      foundNode.val = val;
-      return true;
-    }
-
-    return false;
-  }
-
-  /* Define insert property - insert value at a specific index
-    > accepts a value and an index
-    > create 'new node' using value passed
-    > if index is same as length, 'push' new node to the end of the list
-    > if index is 0, 'unshift' new node to the start of the list
-    > otherwise, 'get' the node at index - 1 position, let previous node
-    > set 'next' property on that 'previous node' to be new node
-    > set 'next' property on 'new node' to be previous's next
-    > increment the length
-    > return true
-    */
-  insert(index, val) {
-    if (
-      val === "undefined" ||
-      index === "undefined" ||
-      index < 0 ||
-      index > this.length
-    )
-      return false;
-
-    let newNode = new Node(val);
-
-    if (index === 0) return !!this.unshift(val);
-    if (index === this.length) return !!this.push(val);
-
-    let prevNode = this.get(index - 1);
-    newNode.next = prevNode.next;
-    prevNode.next = newNode;
-    this.length++;
-
+    const foundNode = this.get(index);
+    if (!foundNode) return false;
+    foundNode.value = val;
     return true;
   }
 
-  /* Define remove property - remove value from a specific index
-    > accepts an index  
-    > if index < 0 or >= the length of the list, return undefined
-    > if index is same aslength-1, use 'pop'
-    > if index = 0, use 'shift'
-    > otherwise, using 'get' method, access the node at index - 1  
-    > set 'next' property on that node to be the next of the next node
-    > decrement the length
-    > return the value of the node removed
-    */
-  remove(index) {
-    if (index < 0 || index >= this.length) return;
-
-    if (index === 0) return this.shift();
-    if (index === this.length - 1) return this.pop();
-
-    let prevNode = this.get(index - 1);
-    let removeNode = prevNode.next;
-    prevNode.next = removeNode.next;
-    this.length--;
-
-    return removeNode.val;
+  // https://cs.slides.com/colt_steele/singly-linked-lists#/23
+  insert(index, val) {
+    if (index < 0 || index > this.length) return false;
+    if (index === 0) return !!this.unshift(val);
+    if (index === this.length) return !!this.push(val);
+    const prev = this.get(index - 1);
+    const newNode = new Node(val);
+    newNode.next = prev.next;
+    prev.next = newNode;
+    this.length++;
+    return true;
   }
 
-  /* Define reverse property - reverse the linked list at place
-    > swap the head and tail
-    > create variables called 'next' & 'prev'
-    > create a variable called node and initialize it to the head property
-    > loop through the list
-    > set next to be the next property on whatever node is
-    > set 'next' property on node to be whatever 'prev' is
-    > set prev to be the value of node variable
-    > set the node variable to be the value of the next variable
-    */
-  reverse() {
-    let node = this.head;
-    this.head = this.tail;
-    this.tail = node;
+  // https://cs.slides.com/colt_steele/singly-linked-lists#/26
+  remove(index) {
+    if (index < 0 || index >= this.length) return undefined;
+    if (index === 0) return this.shift();
+    if (index === this.length - 1) return this.pop();
+    const prev = this.get(index - 1);
+    const removeNode = prev.next;
+    prev.next = prev.next.next;
+    removeNode.next = null;
+    this.length--;
+    return removeNode.value;
+  }
 
-    let prev = null,
-      next;
-    for (let i = 0; i < this.length; i++) {
-      next = node.next;
+  // https://cs.slides.com/colt_steele/singly-linked-lists#/29
+  /* original: 13 -> 27 -> 32 -> 71
+     reversed: 13 <- 27 <- 32 <- 71 */
+  reverse() {
+    let node = this.head,
+      prev = null;
+    [this.head, this.tail] = [this.tail, this.head];
+    while (node) {
+      const next = node.next;
       node.next = prev;
-      prev = node;
+      prev = node; // prev captures last traversed node in the process
       node = next;
     }
-
     return this;
   }
 }
 
-// create a singly linked list
-let list = new SinglyLinkedList();
-list.push("Hi!!");
-list.push("this is");
-list.push("Sourav");
-list.push(":)");
+const singlyLinkedList = new SinglyLinkedList();
+
+singlyLinkedList.push('Good morning!!');
+singlyLinkedList.push('Hi,');
+singlyLinkedList.push('this is');
+singlyLinkedList.push('Sourav');
+singlyLinkedList.push('Modak');
+
+console.log(singlyLinkedList);

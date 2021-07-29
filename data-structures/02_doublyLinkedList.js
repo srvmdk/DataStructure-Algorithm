@@ -1,15 +1,16 @@
-/* Creating a doubly linked list*/
+/**
+ * @class DoublyLinkedList
+ * @link https://cs.slides.com/colt_steele/doubly-linked-lists
+ */
 
-// Define Node class
 class Node {
   constructor(val) {
-    this.val = val;
-    this.next = null;
+    this.value = val;
     this.prev = null;
+    this.next = null;
   }
 }
 
-// Define doubly linked list
 class DoublyLinkedList {
   constructor() {
     this.head = null;
@@ -17,241 +18,149 @@ class DoublyLinkedList {
     this.length = 0;
   }
 
-  resetHeadTail() {
-    this.head = null;
-    this.tail = null;
-  }
-
-  /* Define push property
-    > Create a new node with the value passed to the function
-    > If the head property is null set the head and tail to be the newly created node 
-    > If not, set the next property on the tail to be that node
-    > Set the previous property on the newly created node to be the tail
-    > Set the tail to be the newly created node
-    > Increment the length
-    > Return the Doubly Linked List
-    */
+  // https://cs.slides.com/colt_steele/doubly-linked-lists#/5
   push(val) {
-    let newNode = new Node(val);
-
-    if (!this.head) {
-      this.head = newNode;
-    } else {
+    const newNode = new Node(val);
+    if (this.head) {
       this.tail.next = newNode;
       newNode.prev = this.tail;
+    } else {
+      this.head = newNode;
     }
-
     this.tail = newNode;
     this.length++;
-
     return this;
   }
 
-  /* Define pop property
-    > If there is no head, return undefined
-    > Store the current tail in a variable to return later
-    > If the length is 1, set the head and tail to be null
-    > Update the tail to be the previous Node.
-    > Set the newTail's next to null
-    > Decrement the length
-    > Return the value removed
-    */
+  // https://cs.slides.com/colt_steele/doubly-linked-lists#/8
   pop() {
-    if (!this.head) return;
-
-    let poppedNode = this.tail;
-    if (this.length === 1) this.resetHeadTail();
-    else {
-      this.tail = poppedNode.prev;
+    if (!this.head) return undefined;
+    const removeNode = this.tail;
+    if (this.head === this.tail) {
+      this.head = null;
+      this.tail = null;
+    } else {
+      this.tail = removeNode.prev;
       this.tail.next = null;
-      poppedNode.prev = null;
     }
+    removeNode.next = null;
+    removeNode.prev = null;
     this.length--;
-
-    return poppedNode.val;
+    return removeNode.value;
   }
 
-  /* Define shift property
-    > If length is 0, return undefined
-    > Store the current head property in a variable (we'll call it old head)
-    > If the length is one,
-        > Set the head to be null
-        > Set the tail to be null
-    > Update the head to be the next of the old head
-    > Set the head's prev property to null
-    > Set the old head's next to null
-    > Decrement the length
-    */
+  // https://cs.slides.com/colt_steele/doubly-linked-lists#/11
   shift() {
-    if (!this.head) return;
-
-    let oldHead = this.head;
-    if (this.length === 1) this.resetHeadTail();
-    else {
-      this.head = oldHead.next;
+    if (!this.head) return undefined;
+    const removeNode = this.head;
+    if (this.head === this.tail) {
+      this.head = null;
+      this.tail = null;
+    } else {
+      this.head = removeNode.next;
       this.head.prev = null;
-      oldHead.next = null;
     }
+    removeNode.next = null;
+    removeNode.prev = null;
     this.length--;
-
-    return oldHead.val;
+    return removeNode.value;
   }
 
-  /* Define unshift property
-    > Create a new node with the value passed to the function
-    > If the length is 0
-        > Set the head to be the new node
-        > Set the tail to be the new node
-    > Otherwise,
-        > Set the prev property on the head of the list to be the new node
-        > Set the next property on the new node to be the head property 
-        > Update the head to be the new node
-    > Increment the length
-    > Return the list
-    */
+  // https://cs.slides.com/colt_steele/doubly-linked-lists#/14
   unshift(val) {
-    let newNode = new Node(val);
-
-    if (!this.length) {
-      this.head = newNode;
+    const newNode = new Node(val);
+    if (!this.head) {
       this.tail = newNode;
     } else {
       this.head.prev = newNode;
       newNode.next = this.head;
-      this.head = newNode;
     }
+    this.head = newNode;
     this.length++;
-
     return this;
   }
 
-  /* Define get property
-    > If the index is less than 0 or greater or equal to the length, return null
-    > If the index is less than or equal to half the length of the list
-        > Loop through the list starting from the head and loop towards the middle
-        > Return the node once it is found
-    > If the index is greater than half the length of the list
-    ​    > Loop through the list starting from the tail and loop towards the middle
-        > Return the node once it is found
-    */
+  // https://cs.slides.com/colt_steele/doubly-linked-lists#/17
   get(index) {
     if (index < 0 || index >= this.length) return null;
-    let travelFromHead = index <= this.length / 2 ? true : false;
-
-    let currentNode = travelFromHead ? this.head : this.tail;
-    let counter = travelFromHead ? 0 : this.length - 1;
-
-    while (counter !== index) {
-      currentNode = travelFromHead ? currentNode.next : currentNode.prev;
-      travelFromHead ? counter++ : counter--;
+    let foundNode;
+    if (index <= this.length / 2) {
+      let counter = 0;
+      foundNode = this.head;
+      while (counter !== index) {
+        foundNode = foundNode.next;
+        counter++;
+      }
+    } else {
+      let counter = this.length - 1;
+      foundNode = this.tail;
+      while (counter !== index) {
+        foundNode = foundNode.prev;
+        counter--;
+      }
     }
-
-    return currentNode;
+    return foundNode;
   }
 
-  /* Define set property
-    > Create a variable which is the result of the get method at the index passed
-      to the function
-        > If the get method returns a valid node, 
-          set the value of that node to be the value passed to the function
-        > Return true
-    > Otherwise, return false
-    */
+  // https://cs.slides.com/colt_steele/doubly-linked-lists#/20
   set(index, val) {
-    let foundNode = this.get(index);
-
-    if (foundNode !== null) {
-      foundNode.val = val;
-      return true;
-    }
-
-    return false;
+    const foundNode = this.get(index);
+    if (!foundNode) return false;
+    foundNode.value = val;
+    return true;
   }
 
-  /* Define insert property
-    > If the index is less than zero or greater than or equal to the length return false
-    > If the index is 0, unshift
-    > If the index is the same as the length, push
-    > Use the get method to access the index -1
-    > Set the next and prev properties on the correct nodes to link everything together
-    > Increment the length 
-    > Return true
-    */
+  // https://cs.slides.com/colt_steele/doubly-linked-lists#/23
   insert(index, val) {
+    if (index < 0 || index > this.length) return false;
     if (index === 0) return !!this.unshift(val);
     if (index === this.length) return !!this.push(val);
-
-    let newNode = new Node(val);
-    let foundNode = this.get(index - 1);
-    if (foundNode !== null) {
-      let nextNode = foundNode.next;
-      foundNode.next = newNode;
-      newNode.prev = foundNode;
-      newNode.next = nextNode;
-      nextNode.prev = newNode;
-      this.length++;
-      return true;
-    }
-
-    return false;
+    const newNode = new Node(val);
+    const prevNode = this.get(index - 1);
+    newNode.prev = prevNode;
+    newNode.next = prevNode.next;
+    prevNode.next = newNode;
+    newNode.next.prev = newNode
+    this.length++;
+    return true;
   }
 
-  /* Define remove property
-    > If the index is less than zero or greater than or equal to the length return 
-      undefined
-    > If the index is 0, shift
-    > If the index is the same as the length-1, pop
-    > Use the get method to retrieve the item to be removed
-    > Update the next and prev properties to remove the found node from the list
-    > Set next and prev to null on the found node
-    > Decrement the length
-    > Return the removed node
-    */
+  // https://cs.slides.com/colt_steele/doubly-linked-lists#/26
   remove(index) {
-    if (index === 0) return this.shift();
-    if (index === this.length - 1) return this.pop();
-
-    let removeNode = this.get(index);
-    if (removeNode !== null) {
-      removeNode.prev.next = removeNode.next;
-      removeNode.next.prev = removeNode.prev;
-      this.length--;
-
-      removeNode.prev = null;
-      removeNode.next = null;
-      return removeNode.val;
-    } else return;
+    if (index < 0 || index >= this.length) return false;
+    if (index === 0) return !!this.shift();
+    if (index === this.length - 1) return !!this.pop();
+    const removeNode = this.get(index);
+    removeNode.prev.next = removeNode.next;
+    removeNode.next.prev = removeNode.prev;
+    removeNode.prev = null;
+    removeNode.next = null;
+    this.length--;
+    return removeNode.value;
   }
 
-  /* Define reverse property
-    > Create a variable called currentNode and set it to be the head of the list
-    > Swap head & tail property of the list
-    > Loop through the list
-        > create a variable nextNode and set it to be next property of currentNode
-        > swap next & prev property of the currentNode
-        > currentNode will be set to be same as stored in nextNode
-    > Return the list
-    */
+  // https://cs.slides.com/colt_steele/doubly-linked-lists#/29
   reverse() {
-    let currentNode = this.head;
-    this.head = this.tail;
-    this.tail = currentNode;
-
-    for (let i = 0; i < this.length; i++) {
-      let nextNode = currentNode.next;
-      currentNode.next = currentNode.prev;
-      currentNode.prev = nextNode;
-      currentNode = nextNode;
+    let curr = this.head;
+    [this.head, this.tail] = [this.tail, this.head];
+    let counter = 0;
+    while (counter < this.length) {
+      const next = curr.next;
+      curr.next = curr.prev;
+      curr.prev = next;
+      curr = next;
+      counter++;
     }
-
     return this;
   }
 }
 
-// create a doubly linked list
-let list = new DoublyLinkedList();
-list.push("Hi!!");
-list.push("this");
-list.push("is");
-list.push("Sourav");
-list.push(":)");
+const doublyLinkedList = new DoublyLinkedList();
+
+doublyLinkedList.push('Good morning!!');
+doublyLinkedList.push('Hi,');
+doublyLinkedList.push('this is');
+doublyLinkedList.push('Sourav');
+doublyLinkedList.push('Modak');
+
+console.log(doublyLinkedList);
