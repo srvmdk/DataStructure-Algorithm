@@ -1,6 +1,7 @@
 /**
  * @class Sort
  * @link https://cs.slides.com/colt_steele/elementary-sorting-algorithms
+ * @link https://cs.slides.com/colt_steele/intermediate-sorting-algorithms
  */
 
 class Sort {
@@ -8,6 +9,7 @@ class Sort {
     return ([arr[idx1], arr[idx2]] = [arr[idx2], arr[idx1]]);
   }
 
+  // https://cs.slides.com/colt_steele/elementary-sorting-algorithms#/8
   bubbleSort(arr) {
     for (let i = arr.length - 1; i >= 0; i--) {
       let isSwapped = false;
@@ -22,6 +24,7 @@ class Sort {
     return arr;
   }
 
+  // https://cs.slides.com/colt_steele/elementary-sorting-algorithms#/11
   selectionSort(arr) {
     for (let i = 0; i < arr.length - 1; i++) {
       let minValIdx = i;
@@ -33,6 +36,7 @@ class Sort {
     return arr;
   }
 
+  // https://cs.slides.com/colt_steele/elementary-sorting-algorithms#/14
   insertionSort(arr) {
     for (let i = 1; i < arr.length; i++) {
       // first index is assumed as sorted
@@ -44,6 +48,7 @@ class Sort {
     return arr;
   }
 
+  // https://cs.slides.com/colt_steele/intermediate-sorting-algorithms#/6
   #mergeHelper(arr1, arr2) {
     let p1 = 0,
       p2 = 0,
@@ -62,6 +67,7 @@ class Sort {
     return mergedArr;
   }
 
+  // https://cs.slides.com/colt_steele/intermediate-sorting-algorithms#/4
   mergeSort(arr) {
     if (arr.length <= 1) return arr; // exit case
     const mid = Math.floor(arr.length / 2);
@@ -70,6 +76,7 @@ class Sort {
     return this.#mergeHelper(left, right);
   }
 
+  // https://cs.slides.com/colt_steele/intermediate-sorting-algorithms#/16
   #pivotHelper(arr, startIdx = 0, endIdx = arr.length - 1) {
     let pivot = arr[startIdx],
       swapIdx = startIdx;
@@ -83,6 +90,7 @@ class Sort {
     return swapIdx;
   }
 
+  // https://cs.slides.com/colt_steele/intermediate-sorting-algorithms#/14
   quickSort(arr, left = 0, right = arr.length - 1) {
     if (left < right) {
       let pivotIdx = this.#pivotHelper(arr, left, right);
@@ -101,6 +109,7 @@ class Sort {
     return Math.floor(Math.abs(num) / 10 ** pos) % 10;
   }
 
+  // https://cs.slides.com/colt_steele/intermediate-sorting-algorithms#/28
   // works only for integers
   radixSort(arr) {
     const largestNumLength = this.#getLargestNumLength(arr);
